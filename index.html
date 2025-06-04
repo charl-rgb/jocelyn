@@ -1,0 +1,789 @@
+<!doctype html>
+<html class="no-js" lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>SQL Master - Aprende y Juega con Bases de Datos</title>
+    <meta name="description"
+        content="Plataforma interactiva para aprender SQL a través de juegos y ejercicios prácticos">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" type="image/png" sizes="40x40" href="img\logo sql master-fotor-.png">
+    <link rel="icon" type="image/png" sizes="40x" href="img\logo sql master-fotor-.png">
+    <link rel="apple-touch-icon" href="img\logo sql master-fotor-.png">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,300i,400,500,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+    <style>
+        :root {
+            --navy: #2F4155;
+            --teal: #567C8D;
+            --sky-blue: #C8D9E6;
+            --beige: #F5EFEB;
+            --white: #FFFFFF;
+            --dark-teal: #386A70;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--beige);
+            color: var(--navy);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(47, 65, 85, 0.1);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 12px rgba(47, 65, 85, 0.15);
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand span {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            color: var(--navy);
+            font-weight: 500;
+            margin: 0 12px;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--teal);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--teal);
+        }
+
+        .btn-primary {
+            background-color: var(--teal);
+            border-color: var(--teal);
+            color: white;
+            font-weight: 500;
+            padding: 10px 25px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(86, 124, 141, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--navy);
+            border-color: var(--navy);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(47, 65, 85, 0.3);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--teal);
+            color: var(--teal);
+            font-weight: 500;
+            padding: 10px 25px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--teal);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(86, 124, 141, 0.3);
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--navy), var(--teal));
+            color: white;
+            padding: 120px 0 100px;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            margin-bottom: 50px;
+        }
+
+        .hero-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            opacity: 0.05;
+        }
+
+        .hero-title {
+            font-weight: 700;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-weight: 300;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(47, 65, 85, 0.08);
+            transition: all 0.4s ease;
+            margin-bottom: 30px;
+            overflow: hidden;
+            background-color: var(--white);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(47, 65, 85, 0.15);
+        }
+
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+
+        .card-title {
+            color: var(--navy);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .card-text {
+            color: var(--navy);
+            opacity: 0.8;
+        }
+
+        .news-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(47, 65, 85, 0.08);
+            margin-bottom: 40px;
+            transition: all 0.4s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(47, 65, 85, 0.15);
+        }
+
+        .news-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hot {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .new {
+            background-color: var(--teal);
+            color: white;
+        }
+
+        .feature-section {
+            background-color: var(--sky-blue);
+            padding: 80px 0;
+            clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
+            margin-top: -50px;
+            margin-bottom: 50px;
+        }
+
+        .feature-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            padding: 30px;
+            height: 100%;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(47, 65, 85, 0.05);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(47, 65, 85, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--teal);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            bottom: -10px;
+            left: 0;
+            background-color: var(--teal);
+        }
+
+        .section-subtitle {
+            color: var(--navy);
+            opacity: 0.7;
+            margin-bottom: 40px;
+        }
+
+        footer {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 80px 0 30px;
+            clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
+            margin-top: 50px;
+        }
+
+        .footer-title {
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--sky-blue);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+            padding-left: 5px;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 18px;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--teal);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+        }
+
+        .list-group-item {
+            border: none;
+            padding: 15px 20px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .list-group-item:hover {
+            background-color: var(--sky-blue);
+            border-left: 3px solid var(--teal);
+            padding-left: 25px;
+        }
+
+        .list-group-item i {
+            color: var(--teal);
+            margin-right: 10px;
+        }
+
+        .text-muted {
+            color: var(--navy);
+            opacity: 0.7;
+        }
+
+        @media (max-width: 992px) {
+            .hero-section {
+                padding: 100px 0 80px;
+                clip-path: polygon(0 0, 100% 0, 100% 95%, 0 100%);
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .feature-section {
+                clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 100%);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 80px 0 60px;
+                clip-path: polygon(0 0, 100% 0, 100% 97%, 0 100%);
+                text-align: center;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .feature-section {
+                clip-path: none;
+                padding: 60px 0;
+            }
+
+            footer {
+                clip-path: none;
+                text-align: center;
+            }
+
+            .section-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+                width: 30px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-section {
+                padding: 60px 0 40px;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            .btn-primary,
+            .btn-outline {
+                padding: 8px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"
+                style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                <img src="img\logo sql master-fotor-.png" alt="SQL Master Logo" style="width: 40px; height: 40px;">
+                <span style="font-weight: 700; font-size: 1.5rem;">
+                    SQL Master
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#juegos">Juegos SQL</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#footer">Contacto</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="hero-title mb-4">Domina SQL jugando</h1>
+                    <p class="hero-subtitle mb-4">Aprende bases de datos de forma interactiva con nuestros juegos y
+                        desafíos diseñados para todos los niveles.</p>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="img\Copilot_20250603_174740.png" alt="SQL Learning" class="img-fluid rounded-3 shadow-lg"
+                        style="border: 5px solid rgba(255,255,255,0.2);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container my-5" id="juegos">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="news-card">
+                    <div class="position-relative overflow-hidden">
+                        <img src="img\22.png" class="card-img-top" alt="Nuevo juego SQL">
+                        <span class="news-badge new">Nuevo</span>
+                    </div>
+                    <div class="p-4">
+                        <h2 class="fw-bold">SQL Constructor</h2>
+                        <p class="text-muted"><i class="far fa-clock me-2"></i> 29/05/2025</p>
+                        <p class="mt-3">Este es un juego interactivo de arrastrar y soltar (Drag-and-Drop) para aprender
+                            sentencias SQL. Se muestra una frase en lenguaje natural y el jugador debe arrastrar la
+                            sentencia SQL correcta entre varias opciones.</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-teal me-2"></i> Traducir frases comunes
+                                a sentencias SQL</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-teal me-2"></i> Usar comandos como
+                                SELECT, INSERT, DELETE, UPDATE, WHERE</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-teal me-2"></i> Aplicar lógica y
+                                sintaxis de SQL de forma práctica</li>
+                        </ul>
+                        <a href="sql consructor.html" class="btn btn-primary mt-2">Jugar ahora</a>
+                    </div>
+                </div>
+
+                <div class="news-card">
+                    <div class="position-relative overflow-hidden">
+                        <img src="img\112.png" class="card-img-top" alt="Curso MySQL">
+                        <span class="news-badge hot">Popular</span>
+                    </div>
+                    <div class="p-4">
+                        <h2 class="fw-bold">Escribe la consulta</h2>
+                        <p class="text-muted"><i class="far fa-clock me-2"></i> 28/05/2025</p>
+                        <p class="mt-3">El jugador recibe una sentencia SQL completamente desordenada, donde cada
+                            palabra clave, nombre de tabla y símbolo está separada y mezclada. La tarea del jugador es
+                            arrastrar las piezas para colocarlas en el orden correcto, formando una consulta SQL válida
+                            según una instrucción dada.</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-teal me-2"></i> Estructura lógica de una
+                                sentencia SQL</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-teal me-2"></i> Orden correcto de
+                                palabras clave y cláusulas</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-teal me-2"></i> Comprensión de sintaxis
+                                real en un entorno visual</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-teal me-2"></i> Refuerzo de comandos
+                                como SELECT, FROM, WHERE, ORDER BY</li>
+                        </ul>
+                        <a href="consultor.html" class="btn btn-primary mt-2">Jugar ahora</a>
+                    </div>
+                </div>
+
+                <div class="news-card" id="3">
+                    <div class="position-relative overflow-hidden">
+                        <img src="img\00.png" class="card-img-top" alt="Torneo SQL">
+                        <span class="news-badge">Destacado</span>
+                    </div>
+                    <div class="p-4">
+                        <h2 class="fw-bold">SQL Quest</h2>
+                        <p class="text-muted"><i class="far fa-clock me-2"></i> 27/05/2025</p>
+                        <p class="mt-3">El juego guía al usuario paso a paso por los conceptos básicos de SQL, desde
+                            crear tablas hasta insertar y consultar datos. El sistema de pistas ayuda cuando se necesita
+                            orientación, y el diseño visual hace que aprender SQL sea más divertido y menos intimidante.
+                        </p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-teal me-2"></i> Crear tablas usando
+                                sentencias CREATE TABLE</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-teal me-2"></i> Insertar datos con
+                                INSERT INTO</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-teal me-2"></i> Consultar información
+                                usando SELECT, WHERE, ORDER BY</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-teal me-2"></i> Actualizar y eliminar
+                                registros con UPDATE y DELETE</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-teal me-2"></i> Comprender estructuras y
+                                relaciones básicas entre tablas</li>
+                        </ul>
+                        <a href="preguntas-sql.html" class="btn btn-primary mt-2">Jugar ahora</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-navy mb-4">Beneficios</h5>
+                        <div class="list-group list-group-flush">
+                            <a href="#"
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-play-circle me-2 text-teal"></i>El aprendizaje activo ayuda a
+                                    recordar mejor</span>
+                                <i class="fas fa-chevron-right text-muted"></i>
+                            </a>
+                            <a href="#"
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-graduation-cap me-2 text-teal"></i> El juego aumenta el
+                                    interés</span>
+                                <i class="fas fa-chevron-right text-muted"></i>
+                            </a>
+                            <a href="#"
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-trophy me-2 text-teal"></i> Entender la estructura y secuencia
+                                    correcta</span>
+                                <i class="fas fa-chevron-right text-muted"></i>
+                            </a>
+                            <a href="#"
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-question-circle me-2 text-teal"></i> Se refuerzan estructuras y
+                                    lógica de SQL en contexto</span>
+                                <i class="fas fa-chevron-right text-muted"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold text-navy mb-4">Niveles</h5>
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1 fw-bold">SQL desde cero</h6>
+                                    <small class="text-success">4.9 <i class="fas fa-star"></i></small>
+                                </div>
+                                <small class="text-muted">1,245 estudiantes</small>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1 fw-bold">Optimización avanzada</h6>
+                                    <small class="text-success">4.8 <i class="fas fa-star"></i></small>
+                                </div>
+                                <small class="text-muted">876 estudiantes</small>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1 fw-bold">NoSQL con MongoDB</h6>
+                                    <small class="text-success">4.7 <i class="fas fa-star"></i></small>
+                                </div>
+                                <small class="text-muted">654 estudiantes</small>
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1 fw-bold">Modelado de datos</h6>
+                                    <small class="text-success">4.6 <i class="fas fa-star"></i></small>
+                                </div>
+                                <small class="text-muted">542 estudiantes</small>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="feature-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">¿Por qué aprender con nosotros?</h2>
+                <p class="section-subtitle">Nuestra plataforma combina educación y entretenimiento para maximizar tu
+                    aprendizaje</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-gamepad"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Aprendizaje gamificado</h4>
+                        <p class="text-muted">Aprende SQL a través de juegos interactivos que hacen que el aprendizaje
+                            sea divertido y adictivo.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Entornos reales</h4>
+                        <p class="text-muted">Practica con bases de datos reales y escenarios del mundo laboral para
+                            obtener experiencia práctica.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h4 class="fw-bold mb-3">Sistema de logros</h4>
+                        <p class="text-muted">Desbloquea logros, compite en rankings y muestra tus habilidades con
+                            nuestro sistema de certificación.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h5 class="footer-title">SQL Master</h5>
+                    <p class="mb-4">Plataforma interactiva para aprender bases de datos y SQL a través de juegos y
+                        desafíos.</p>
+                    <div class="mt-4">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <h5 class="footer-title">Juegos</h5>
+                    <ul class="footer-links">
+                        <li><a href="#juegos">SQL Constructor</a></li>
+                        <li><a href="#juegos">Escribe la consulta</a></li>
+                        <li><a href="#juegos">SQL Quest</a></li>
+                        <li><a href="#juegos">Todos los juegos</a></li>
+                    </ul>
+                </div>
+
+
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <h5 class="footer-title">Recursos</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Tutoriales</a></li>
+                        <li><a href="#">Documentación</a></li>
+                        <li><a href="#">Comunidad</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-title">Contacto</h5>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope me-2"></i> info@sqlmaster.com</li>
+                        <li><i class="fas fa-phone me-2"></i> +503 12345678</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Calle SQL, San Salvador</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row copyright">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0">© 2025 SQL Master. 2°D - 2025 Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white me-3">Términos de servicio</a>
+                    <a href="#" class="text-white me-3">Política de privacidad</a>
+                    
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+      
+        window.addEventListener('scroll', function () {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.feature-card, .news-card');
+
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        document.querySelectorAll('.feature-card, .news-card').forEach(element => {
+            element.style.opacity = '0';
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        });
+
+        window.addEventListener('load', animateOnScroll);
+        window.addEventListener('scroll', animateOnScroll);
+    </script>
+</body>
+
+</html>

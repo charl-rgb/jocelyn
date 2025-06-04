@@ -1,0 +1,1240 @@
+<!doctype html>
+<html class="no-js" lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>SQL Master - Aprende y Juega con Bases de Datos</title>
+    <meta name="description" content="Plataforma interactiva para aprender SQL a través de juegos y ejercicios prácticos">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" type="image/png" sizes="40x40" href="img\logo sql master-fotor-.png">
+    <link rel="apple-touch-icon" href="img\logo sql master-fotor-.png">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,300i,400,500,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        :root {
+            --navy: #2F4155;
+            --teal: #567C8D;
+            --sky-blue: #C8D9E6;
+            --beige: #F5EFEB;
+            --white: #FFFFFF;
+            --dark-teal: #386A70;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--beige);
+            color: var(--navy);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(47, 65, 85, 0.1);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 12px rgba(47, 65, 85, 0.15);
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand span {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            color: var(--navy);
+            font-weight: 500;
+            margin: 0 12px;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--teal);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--teal);
+        }
+
+        .btn-primary {
+            background-color: var(--teal);
+            border-color: var(--teal);
+            color: white;
+            font-weight: 500;
+            padding: 10px 25px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(86, 124, 141, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--navy);
+            border-color: var(--navy);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(47, 65, 85, 0.3);
+        }
+
+        /* Estilos del juego SQL Constructor */
+        .game-container {
+            background-color: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(47, 65, 85, 0.1);
+            padding: 2rem;
+            margin: 3rem 0;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .game-title {
+            color: var(--navy);
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-subtitle {
+            color: var(--teal);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .score-item {
+            background-color: var(--sky-blue);
+            padding: 0.8rem 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .score-label {
+            font-size: 0.9rem;
+            color: var(--navy);
+            font-weight: 500;
+        }
+
+        .score-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .question-section {
+            background-color: var(--beige);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 5px solid var(--teal);
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--navy);
+            margin-bottom: 1rem;
+        }
+
+        .hint-section {
+            background-color: var(--sky-blue);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--teal);
+            display: none;
+        }
+
+        .hint-text {
+            font-size: 0.95rem;
+            color: var(--navy);
+            font-style: italic;
+            margin: 0;
+        }
+
+        .hint-button {
+            background-color: var(--white);
+            border: 2px solid var(--teal);
+            color: var(--teal);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .hint-button:hover {
+            background-color: var(--teal);
+            color: var(--white);
+        }
+
+        .hint-button.used {
+            background-color: var(--sky-blue);
+            border-color: var(--dark-teal);
+            color: var(--navy);
+            cursor: not-allowed;
+        }
+
+        .drop-zone {
+            min-height: 80px;
+            border: 3px dashed var(--teal);
+            border-radius: 10px;
+            background-color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .drop-zone.drag-over {
+            background-color: var(--sky-blue);
+            border-color: var(--navy);
+            transform: scale(1.02);
+        }
+
+        .drop-zone.has-answer {
+            border-color: var(--dark-teal);
+            background-color: var(--sky-blue);
+        }
+
+        .drop-zone-text {
+            color: var(--teal);
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .sql-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .sql-block {
+            background-color: var(--white);
+            border: 2px solid var(--teal);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+            color: var(--navy);
+            user-select: none;
+            position: relative;
+        }
+
+        .sql-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(86, 124, 141, 0.3);
+            background-color: var(--sky-blue);
+        }
+
+        .sql-block.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .sql-block.used {
+            opacity: 0.3;
+            pointer-events: none;
+            background-color: #f0f0f0;
+        }
+
+        .game-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-game {
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-verify {
+            background-color: var(--teal);
+            color: white;
+        }
+
+        .btn-verify:hover {
+            background-color: var(--dark-teal);
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background-color: var(--navy);
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background-color: var(--dark-teal);
+            transform: translateY(-2px);
+        }
+
+        .btn-next {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-next:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+
+        .progress-bar {
+            background-color: var(--sky-blue);
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 2rem;
+        }
+
+        .progress-fill {
+            background-color: var(--teal);
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 0.8rem;
+                margin: 0.5rem;
+            }
+
+            .game-title {
+                font-size: 1.8rem;
+            }
+
+            .game-subtitle {
+                font-size: 1rem;
+            }
+
+            .score-board {
+                gap: 0.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .score-item {
+                padding: 0.5rem 0.8rem;
+                min-width: 70px;
+            }
+
+            .score-label {
+                font-size: 0.8rem;
+            }
+
+            .score-value {
+                font-size: 1.2rem;
+            }
+
+            .question-section {
+                padding: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .question-text {
+                font-size: 1rem;
+                line-height: 1.4;
+            }
+
+            .hint-text {
+                font-size: 0.85rem;
+            }
+
+            .hint-button {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .sql-options {
+                grid-template-columns: 1fr;
+                gap: 0.6rem;
+            }
+
+            .sql-block {
+                padding: 0.6rem;
+                font-size: 0.8rem;
+                line-height: 1.3;
+            }
+
+            .game-controls {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.8rem;
+            }
+
+            .btn-game {
+                width: 100%;
+                max-width: 180px;
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .drop-zone {
+                min-height: 50px;
+                padding: 0.6rem;
+                font-size: 0.9rem;
+            }
+
+            .drop-zone-text {
+                font-size: 0.85rem;
+            }
+
+            .feedback {
+                padding: 0.8rem;
+                font-size: 0.95rem;
+            }
+
+            .progress-bar {
+                height: 8px;
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                padding: 0.6rem;
+                margin: 0.3rem;
+            }
+
+            .game-title {
+                font-size: 1.6rem;
+            }
+
+            .game-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .score-board {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.4rem;
+            }
+
+            .score-item {
+                width: 100%;
+                max-width: 120px;
+                padding: 0.4rem 0.6rem;
+            }
+
+            .score-label {
+                font-size: 0.75rem;
+            }
+
+            .score-value {
+                font-size: 1.1rem;
+            }
+
+            .question-section {
+                padding: 0.8rem;
+            }
+
+            .question-text {
+                font-size: 0.95rem;
+            }
+
+            .hint-text {
+                font-size: 0.8rem;
+            }
+
+            .sql-block {
+                padding: 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            .btn-game {
+                max-width: 160px;
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+            }
+
+            .drop-zone {
+                min-height: 45px;
+                padding: 0.5rem;
+            }
+
+            .drop-zone-text {
+                font-size: 0.8rem;
+            }
+
+            .feedback {
+                padding: 0.6rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .game-container {
+                padding: 0.4rem;
+                margin: 0.2rem;
+            }
+
+            .game-title {
+                font-size: 1.4rem;
+            }
+
+            .question-text {
+                font-size: 0.9rem;
+            }
+
+            .sql-block {
+                font-size: 0.7rem;
+                padding: 0.4rem;
+            }
+
+            .btn-game {
+                font-size: 0.8rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        footer {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 80px 0 30px;
+            clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
+            margin-top: 50px;
+        }
+
+        .footer-title {
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--sky-blue);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+            padding-left: 5px;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 18px;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--teal);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            footer {
+                clip-path: none;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                <img src="img\logo sql master-fotor-.png" alt="SQL Master Logo" style="width: 40px; height: 40px;">
+                <span style="font-weight: 700; font-size: 1.5rem;">
+                    SQL Master
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#juegos">Juegos SQL</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#footer">Contacto</a>
+                    </li>
+                </ul>
+                
+            </div>
+        </div>
+    </nav>
+
+    <!-- Juego SQL Constructor -->
+    <div class="container">
+        <div class="game-container">
+            <div class="game-header">
+                <h1 class="game-title">
+                    <i class="fas fa-database"></i> SQL Constructor
+                </h1>
+                <p class="game-subtitle">Traduce frases en lenguaje natural a sentencias SQL</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="score-board">
+                <div class="score-item">
+                    <div class="score-label">Puntos</div>
+                    <div class="score-value" id="scoreValue">0</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Nivel</div>
+                    <div class="score-value" id="levelValue">1</div>
+                </div>
+                <div class="score-item">
+                    <div class="score-label">Pregunta</div>
+                    <div class="score-value">
+                        <span id="currentQuestion">1</span>/<span id="totalQuestions">10</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question-section">
+                <div class="question-text" id="questionText">
+                    Mostrar todos los registros de la tabla "usuarios"
+                </div>
+                <button class="hint-button" id="hintBtn">
+                    <i class="fas fa-lightbulb"></i> Ver Pista
+                </button>
+                <div class="hint-section" id="hintSection">
+                    <p class="hint-text" id="hintText">
+                        Usa SELECT * para seleccionar todas las columnas de una tabla específica.
+                    </p>
+                </div>
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-zone-text">
+                        Arrastra aquí la consulta SQL correcta o toca para seleccionar
+                    </div>
+                </div>
+            </div>
+
+            <div class="sql-options" id="sqlOptions">
+                <!-- Las opciones se generan dinámicamente -->
+            </div>
+
+            <div class="game-controls">
+                <button class="btn-game btn-verify" id="verifyBtn">
+                    <i class="fas fa-check"></i> Verificar Respuesta
+                </button>
+                <button class="btn-game btn-reset" id="resetBtn">
+                    <i class="fas fa-undo"></i> Reiniciar
+                </button>
+                <button class="btn-game btn-next" id="nextBtn" style="display: none;">
+                    <i class="fas fa-arrow-right"></i> Siguiente
+                </button>
+            </div>
+
+            <div class="feedback" id="feedback" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h5 class="footer-title">SQL Master</h5>
+                    <p class="mb-4">Plataforma interactiva para aprender bases de datos y SQL a través de juegos y desafíos.</p>
+                    <div class="mt-4">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <h5 class="footer-title">Juegos</h5>
+                    <ul class="footer-links">
+                        <li><a href="index.html#juegos">SQL Constructor</a></li>
+                        <li><a href="index.html#juegos">Escribe la consulta</a></li>
+                        <li><a href="index.html#juegos">SQL Quest</a></li>
+                        <li><a href="index.html#juegos">Todos los juegos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <h5 class="footer-title">Recursos</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Tutoriales</a></li>
+                        <li><a href="#">Documentación</a></li>
+                        <li><a href="#">Comunidad</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-title">Contacto</h5>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope me-2"></i> info@sqlmaster.com</li>
+                        <li><i class="fas fa-phone me-2"></i> +503 12345678</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Calle SQL, San Salvador</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="row copyright">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0">© 2025 SQL Master. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white me-3">Términos de servicio</a>
+                    <a href="#" class="text-white me-3">Política de privacidad</a>
+                
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // SQL Constructor Game Logic
+        class SQLConstructorGame {
+            constructor() {
+                this.currentQuestionIndex = 0;
+                this.score = 0;
+                this.level = 1;
+                this.currentAnswer = null;
+                
+                this.questions = [
+                    {
+                        question: "Mostrar todos los registros de la tabla 'usuarios'",
+                        hint: "Usa SELECT * para seleccionar todas las columnas de una tabla específica.",
+                        correct: "SELECT * FROM usuarios",
+                        options: [
+                            "SELECT * FROM usuarios",
+                            "SELECT usuarios FROM *",
+                            "GET * FROM usuarios",
+                            "SHOW ALL usuarios"
+                        ]
+                    },
+                    {
+                        question: "Insertar un nuevo usuario con nombre 'Juan' y email 'juan@email.com'",
+                        hint: "INSERT INTO permite agregar nuevos registros especificando las columnas y sus valores.",
+                        correct: "INSERT INTO usuarios (nombre, email) VALUES ('Juan', 'juan@email.com')",
+                        options: [
+                            "INSERT INTO usuarios (nombre, email) VALUES ('Juan', 'juan@email.com')",
+                            "ADD TO usuarios (nombre, email) VALUES ('Juan', 'juan@email.com')",
+                            "INSERT usuarios SET nombre='Juan', email='juan@email.com'",
+                            "CREATE usuarios (nombre, email) VALUES ('Juan', 'juan@email.com')"
+                        ]
+                    },
+                    {
+                        question: "Eliminar todos los usuarios con edad mayor a 65 años",
+                        hint: "DELETE FROM elimina registros que cumplan una condición específica usando WHERE.",
+                        correct: "DELETE FROM usuarios WHERE edad > 65",
+                        options: [
+                            "DELETE FROM usuarios WHERE edad > 65",
+                            "REMOVE FROM usuarios WHERE edad > 65",
+                            "DELETE usuarios WHERE edad > 65",
+                            "DROP FROM usuarios WHERE edad > 65"
+                        ]
+                    },
+                    {
+                        question: "Actualizar el email del usuario con ID 5 a 'nuevo@email.com'",
+                        hint: "UPDATE permite modificar registros existentes usando SET para especificar los nuevos valores.",
+                        correct: "UPDATE usuarios SET email = 'nuevo@email.com' WHERE id = 5",
+                        options: [
+                            "UPDATE usuarios SET email = 'nuevo@email.com' WHERE id = 5",
+                            "MODIFY usuarios SET email = 'nuevo@email.com' WHERE id = 5",
+                            "CHANGE usuarios SET email = 'nuevo@email.com' WHERE id = 5",
+                            "ALTER usuarios SET email = 'nuevo@email.com' WHERE id = 5"
+                        ]
+                    },
+                    {
+                        question: "Seleccionar usuarios que tengan gmail como dominio de email",
+                        hint: "LIKE con % permite buscar patrones de texto. %@gmail.com encuentra emails que terminen con gmail.",
+                        correct: "SELECT * FROM usuarios WHERE email LIKE '%@gmail.com'",
+                        options: [
+                            "SELECT * FROM usuarios WHERE email LIKE '%@gmail.com'",
+                            "SELECT * FROM usuarios WHERE email = '@gmail.com'",
+                            "SELECT * FROM usuarios WHERE email CONTAINS 'gmail.com'",
+                            "SELECT * FROM usuarios WHERE email MATCH '@gmail.com'"
+                        ]
+                    },
+                    {
+                        question: "Contar cuántos usuarios hay en total",
+                        hint: "COUNT(*) cuenta el número total de filas en una tabla o resultado.",
+                        correct: "SELECT COUNT(*) FROM usuarios",
+                        options: [
+                            "SELECT COUNT(*) FROM usuarios",
+                            "SELECT TOTAL(*) FROM usuarios",
+                            "SELECT SUM(*) FROM usuarios",
+                            "SELECT NUMBER(*) FROM usuarios"
+                        ]
+                    },
+                    {
+                        question: "Mostrar usuarios ordenados por nombre de forma ascendente",
+                        hint: "ORDER BY ordena los resultados. ASC es ascendente (A-Z), DESC es descendente (Z-A).",
+                        correct: "SELECT * FROM usuarios ORDER BY nombre ASC",
+                        options: [
+                            "SELECT * FROM usuarios ORDER BY nombre ASC",
+                            "SELECT * FROM usuarios SORT BY nombre ASC",
+                            "SELECT * FROM usuarios ARRANGE BY nombre ASC",
+                            "SELECT * FROM usuarios GROUP BY nombre ASC"
+                        ]
+                    },
+                    {
+                        question: "Seleccionar los primeros 10 usuarios de la tabla",
+                        hint: "LIMIT restringe el número de resultados devueltos por la consulta.",
+                        correct: "SELECT * FROM usuarios LIMIT 10",
+                        options: [
+                            "SELECT * FROM usuarios LIMIT 10",
+                            "SELECT TOP 10 FROM usuarios",
+                            "SELECT * FROM usuarios MAX 10",
+                            "SELECT * FROM usuarios FIRST 10"
+                        ]
+                    },
+                    {
+                        question: "Crear una nueva tabla llamada 'productos' con columnas id, nombre y precio",
+                        hint: "CREATE TABLE define una nueva tabla especificando el nombre y tipo de cada columna.",
+                        correct: "CREATE TABLE productos (id INT, nombre VARCHAR(100), precio DECIMAL(10,2))",
+                        options: [
+                            "CREATE TABLE productos (id INT, nombre VARCHAR(100), precio DECIMAL(10,2))",
+                            "MAKE TABLE productos (id INT, nombre VARCHAR(100), precio DECIMAL(10,2))",
+                            "NEW TABLE productos (id INT, nombre VARCHAR(100), precio DECIMAL(10,2))",
+                            "BUILD TABLE productos (id INT, nombre VARCHAR(100), precio DECIMAL(10,2))"
+                        ]
+                    },
+                    {
+                        question: "Seleccionar usuarios agrupados por ciudad y mostrar la cantidad en cada ciudad",
+                        hint: "GROUP BY agrupa registros con valores similares. COUNT(*) cuenta elementos en cada grupo.",
+                        correct: "SELECT ciudad, COUNT(*) FROM usuarios GROUP BY ciudad",
+                        options: [
+                            "SELECT ciudad, COUNT(*) FROM usuarios GROUP BY ciudad",
+                            "SELECT ciudad, TOTAL(*) FROM usuarios GROUP BY ciudad",
+                            "SELECT ciudad, COUNT(*) FROM usuarios CLUSTER BY ciudad",
+                            "SELECT ciudad, SUM(*) FROM usuarios GROUP BY ciudad"
+                        ]
+                    }
+                ];
+
+                this.init();
+            }
+
+            init() {
+                this.updateUI();
+                this.setupEventListeners();
+                this.loadQuestion();
+            }
+
+            setupEventListeners() {
+                const dropZone = document.getElementById('dropZone');
+                const verifyBtn = document.getElementById('verifyBtn');
+                const resetBtn = document.getElementById('resetBtn');
+                const nextBtn = document.getElementById('nextBtn');
+                const hintBtn = document.getElementById('hintBtn');
+
+                // Drag and Drop Events
+                dropZone.addEventListener('dragover', this.handleDragOver.bind(this));
+                dropZone.addEventListener('drop', this.handleDrop.bind(this));
+
+                // Button Events
+                verifyBtn.addEventListener('click', this.verifyAnswer.bind(this));
+                resetBtn.addEventListener('click', this.resetQuestion.bind(this));
+                nextBtn.addEventListener('click', this.nextQuestion.bind(this));
+                hintBtn.addEventListener('click', this.showHint.bind(this));
+
+                // Touch/Click events for mobile
+                dropZone.addEventListener('click', this.showDropZoneOptions.bind(this));
+            }
+
+            loadQuestion() {
+                const question = this.questions[this.currentQuestionIndex];
+                document.getElementById('questionText').textContent = question.question;
+                document.getElementById('hintText').textContent = question.hint;
+                
+                // Reset hint button
+                const hintBtn = document.getElementById('hintBtn');
+                const hintSection = document.getElementById('hintSection');
+                hintBtn.classList.remove('used');
+                hintBtn.innerHTML = '<i class="fas fa-lightbulb"></i> Ver Pista';
+                hintSection.style.display = 'none';
+                
+                const optionsContainer = document.getElementById('sqlOptions');
+                optionsContainer.innerHTML = '';
+
+                // Shuffle options
+                const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+
+                shuffledOptions.forEach(option => {
+                    const block = document.createElement('div');
+                    block.className = 'sql-block';
+                    block.textContent = option;
+                    block.draggable = true;
+                    
+                    // Drag events
+                    block.addEventListener('dragstart', this.handleDragStart.bind(this));
+                    block.addEventListener('dragend', this.handleDragEnd.bind(this));
+                    
+                    // Click events for mobile and desktop
+                    block.addEventListener('click', () => this.selectOption(option, block));
+                    
+                    optionsContainer.appendChild(block);
+                });
+
+                this.resetDropZone();
+                this.hideActionButtons();
+            }
+
+            showHint() {
+                const hintBtn = document.getElementById('hintBtn');
+                const hintSection = document.getElementById('hintSection');
+                
+                if (hintSection.style.display === 'none' || !hintSection.style.display) {
+                    hintSection.style.display = 'block';
+                    hintBtn.classList.add('used');
+                    hintBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Ocultar Pista';
+                } else {
+                    hintSection.style.display = 'none';
+                    hintBtn.classList.remove('used');
+                    hintBtn.innerHTML = '<i class="fas fa-lightbulb"></i> Ver Pista';
+                }
+            }
+
+            handleDragStart(e) {
+                e.dataTransfer.setData('text/plain', e.target.textContent);
+                e.target.classList.add('dragging');
+            }
+
+            handleDragEnd(e) {
+                e.target.classList.remove('dragging');
+            }
+
+            handleDragOver(e) {
+                e.preventDefault();
+                e.currentTarget.classList.add('drag-over');
+            }
+
+            handleDrop(e) {
+                e.preventDefault();
+                const dropZone = e.currentTarget;
+                const data = e.dataTransfer.getData('text/plain');
+                
+                dropZone.classList.remove('drag-over');
+                this.placeAnswer(data);
+            }
+
+            selectOption(option, block) {
+                // Mark all blocks as not used
+                document.querySelectorAll('.sql-block').forEach(b => {
+                    b.classList.remove('used');
+                });
+                
+                // Mark selected block as used
+                block.classList.add('used');
+                
+                this.placeAnswer(option);
+            }
+
+            placeAnswer(answer) {
+                const dropZone = document.getElementById('dropZone');
+                this.currentAnswer = answer;
+                
+                dropZone.innerHTML = `<div style="font-family: 'Courier New', monospace; font-weight: 600; color: var(--navy); text-align: center;">${answer}</div>`;
+                dropZone.classList.add('has-answer');
+                
+                document.getElementById('verifyBtn').style.display = 'inline-block';
+            }
+
+            showDropZoneOptions() {
+                if (this.currentAnswer) return;
+                
+                const blocks = document.querySelectorAll('.sql-block:not(.used)');
+                blocks.forEach(block => {
+                    block.style.animation = 'pulse 0.5s ease-in-out';
+                    setTimeout(() => {
+                        block.style.animation = '';
+                    }, 500);
+                });
+            }
+
+            verifyAnswer() {
+                const question = this.questions[this.currentQuestionIndex];
+                const feedback = document.getElementById('feedback');
+                const isCorrect = this.currentAnswer === question.correct;
+
+                feedback.style.display = 'block';
+                
+                if (isCorrect) {
+                    feedback.className = 'feedback correct';
+                    feedback.innerHTML = `
+                        <i class="fas fa-check-circle"></i> 
+                        ¡Correcto! Has construido la consulta SQL perfecta.
+                        <br><small>+${this.calculatePoints()} puntos</small>
+                    `;
+                    this.score += this.calculatePoints();
+                    this.updateScore();
+                } else {
+                    feedback.className = 'feedback incorrect';
+                    feedback.innerHTML = `
+                        <i class="fas fa-times-circle"></i> 
+                        Incorrecto. La respuesta correcta es:
+                        <br><code style="background: rgba(0,0,0,0.1); padding: 5px; border-radius: 5px;">${question.correct}</code>
+                    `;
+                }
+
+                this.hideVerifyButton();
+                this.showNextButton();
+                this.markAllBlocksAsUsed();
+            }
+
+            calculatePoints() {
+                return this.level * 10;
+            }
+
+            resetQuestion() {
+                this.resetDropZone();
+                this.currentAnswer = null;
+                
+                document.querySelectorAll('.sql-block').forEach(block => {
+                    block.classList.remove('used');
+                });
+                
+                document.getElementById('feedback').style.display = 'none';
+                this.hideActionButtons();
+            }
+
+            resetDropZone() {
+                const dropZone = document.getElementById('dropZone');
+                dropZone.innerHTML = '<div class="drop-zone-text">Arrastra aquí la consulta SQL correcta o toca para seleccionar</div>';
+                dropZone.classList.remove('has-answer');
+            }
+
+            nextQuestion() {
+                this.currentQuestionIndex++;
+                
+                if (this.currentQuestionIndex >= this.questions.length) {
+                    this.showGameComplete();
+                    return;
+                }
+                
+                if (this.currentQuestionIndex % 3 === 0) {
+                    this.level++;
+                }
+                
+                this.updateUI();
+                this.loadQuestion();
+                document.getElementById('feedback').style.display = 'none';
+            }
+
+            showGameComplete() {
+                const gameContainer = document.querySelector('.game-container');
+                gameContainer.innerHTML = `
+                    <div class="game-header text-center">
+                        <h1 class="game-title">
+                            <i class="fas fa-trophy" style="color: gold;"></i> ¡Juego Completado!
+                        </h1>
+                        <p class="game-subtitle">Has dominado SQL Constructor</p>
+                    </div>
+                    
+                    <div class="score-board">
+                        <div class="score-item">
+                            <div class="score-label">Puntuación Final</div>
+                            <div class="score-value">${this.score}</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">Nivel Alcanzado</div>
+                            <div class="score-value">${this.level}</div>
+                        </div>
+                        <div class="score-item">
+                            <div class="score-label">Precisión</div>
+                            <div class="score-value">${Math.round((this.score / (this.questions.length * this.level * 10)) * 100)}%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button class="btn-game btn-primary" onclick="location.reload()">
+                            <i class="fas fa-redo"></i> Jugar de Nuevo
+                        </button>
+                        <button class="btn-game btn-primary" onclick="window.location.href='index.html#juegos'">
+                            <i class="fas fa-gamepad"></i> Más Juegos
+                        </button>
+                    </div>
+                `;
+            }
+
+            updateUI() {
+                document.getElementById('scoreValue').textContent = this.score;
+                document.getElementById('levelValue').textContent = this.level;
+                document.getElementById('currentQuestion').textContent = this.currentQuestionIndex + 1;
+                document.getElementById('totalQuestions').textContent = this.questions.length;
+                
+                const progress = ((this.currentQuestionIndex + 1) / this.questions.length) * 100;
+                document.getElementById('progressFill').style.width = progress + '%';
+            }
+
+            updateScore() {
+                document.getElementById('scoreValue').textContent = this.score;
+            }
+
+            hideActionButtons() {
+                document.getElementById('verifyBtn').style.display = 'none';
+                document.getElementById('nextBtn').style.display = 'none';
+            }
+
+            hideVerifyButton() {
+                document.getElementById('verifyBtn').style.display = 'none';
+            }
+
+            showNextButton() {
+                document.getElementById('nextBtn').style.display = 'inline-block';
+            }
+
+            markAllBlocksAsUsed() {
+                document.querySelectorAll('.sql-block').forEach(block => {
+                    block.classList.add('used');
+                });
+            }
+        }
+
+        // Initialize game when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            new SQLConstructorGame();
+        });
+
+        // Add pulse animation for mobile feedback
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes pulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.05); background-color: var(--sky-blue); }
+                100% { transform: scale(1); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>

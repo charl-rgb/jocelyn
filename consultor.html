@@ -1,0 +1,982 @@
+<!doctype html>
+<html class="no-js" lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>SQL Master - Aprende y Juega con Bases de Datos</title>
+    <meta name="description"
+        content="Plataforma interactiva para aprender SQL a través de juegos y ejercicios prácticos">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" type="image/png" sizes="40x40" href="img\logo sql master-fotor-.png">
+    <link rel="icon" type="image/png" sizes="40x" href="img\logo sql master-fotor-.png">
+    <link rel="apple-touch-icon" href="img\logo sql master-fotor-.png">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,300i,400,500,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css">
+    <style>
+        :root {
+            --navy: #2F4155;
+            --teal: #567C8D;
+            --sky-blue: #C8D9E6;
+            --beige: #F5EFEB;
+            --white: #FFFFFF;
+            --dark-teal: #386A70;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--beige);
+            color: var(--navy);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(47, 65, 85, 0.1);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 12px rgba(47, 65, 85, 0.15);
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand span {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            color: var(--navy);
+            font-weight: 500;
+            margin: 0 12px;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--teal);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--teal);
+        } 
+
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffffff 0%, #e3f2fd 25%, #bbdefb 50%, #90caf9 75%, #64b5f6 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2c3e50;
+            position: relative;
+            overflow-x: hidden;
+            padding: 10px;
+        }
+
+        html::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="15" height="15" patternUnits="userSpaceOnUse"><path d="M 15 0 L 0 0 0 15" fill="none" stroke="rgba(33,150,243,0.08)" stroke-width="0.8"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.6;
+            animation: float 25s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(0.5deg); }
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 25px;
+            padding: clamp(20px, 5vw, 40px);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(100, 181, 246, 0.3);
+            box-shadow: 
+                0 25px 50px rgba(33, 150, 243, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+            animation: slideInUp 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 1;
+            min-height: fit-content;
+        }
+
+        @keyframes slideInUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(50px) scale(0.9); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 3rem);
+            margin-bottom: clamp(10px, 3vw, 15px);
+            background: linear-gradient(45deg, #1976d2, #2196f3, #03a9f4, #00bcd4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 4px 20px rgba(33, 150, 243, 0.3);
+            font-weight: 900;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 1.3rem);
+            margin-bottom: clamp(20px, 4vw, 35px);
+            opacity: 0.8;
+            font-weight: 300;
+            color: #546e7a;
+            line-height: 1.4;
+        }
+
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: clamp(20px, 4vw, 30px);
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            gap: clamp(10px, 3vw, 20px);
+            flex-wrap: wrap;
+        }
+
+        .info-card {
+            background: rgba(33, 150, 243, 0.1);
+            padding: clamp(10px, 3vw, 15px) clamp(15px, 4vw, 25px);
+            border-radius: 20px;
+            font-weight: bold;
+            border: 1px solid rgba(33, 150, 243, 0.2);
+            box-shadow: 0 8px 25px rgba(33, 150, 243, 0.1);
+            flex: 1;
+            min-width: 120px;
+            backdrop-filter: blur(10px);
+            color: #1976d2;
+        }
+
+        .progress-container {
+            margin: clamp(15px, 3vw, 25px) 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: clamp(8px, 2vw, 12px);
+            background: rgba(33, 150, 243, 0.2);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: inset 0 2px 4px rgba(33, 150, 243, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2196f3, #03a9f4, #00bcd4);
+            border-radius: 6px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+        }
+
+        .letters-container {
+            margin: clamp(20px, 4vw, 30px) 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: clamp(8px, 2vw, 12px);
+            min-height: clamp(60px, 15vw, 80px);
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .letter-tile {
+            width: clamp(40px, 10vw, 60px);
+            height: clamp(40px, 10vw, 60px);
+            background: linear-gradient(145deg, #2196f3, #1976d2);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 
+                0 8px 20px rgba(33, 150, 243, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            user-select: none;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .letter-tile:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 
+                0 15px 35px rgba(33, 150, 243, 0.3),
+                0 0 25px rgba(33, 150, 243, 0.4);
+            border-color: #03a9f4;
+        }
+
+        .letter-tile:active {
+            transform: translateY(-4px) scale(1.05);
+        }
+
+        .letter-tile.used {
+            opacity: 0.3;
+            transform: scale(0.8);
+            cursor: not-allowed;
+            filter: grayscale(0.7);
+        }
+
+        .answer-container {
+            margin: clamp(20px, 4vw, 30px) 0;
+            min-height: clamp(60px, 15vw, 80px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: clamp(4px, 1.5vw, 8px);
+            padding: clamp(10px, 3vw, 20px);
+            backdrop-filter: blur(5px);
+        }
+
+        .answer-letter {
+            width: clamp(35px, 8vw, 50px);
+            height: clamp(35px, 8vw, 50px);
+            background: linear-gradient(145deg, #ffd700, #ffb347);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 
+                0 6px 15px rgba(255, 215, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            animation: letterPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes letterPop {
+            0% { transform: scale(0) rotate(180deg); opacity: 0; }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+
+        .answer-letter:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 
+                0 10px 25px rgba(255, 215, 0, 0.4),
+                0 0 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .answer-letter:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: clamp(8px, 2vw, 15px);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: clamp(20px, 4vw, 30px) 0;
+            padding: 0 10px;
+        }
+
+        .btn {
+            padding: clamp(10px, 2.5vw, 15px) clamp(15px, 4vw, 30px);
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: clamp(100px, 20vw, 140px);
+            white-space: nowrap;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(145deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .btn-hint {
+            background: linear-gradient(145deg, #ff9800, #f57c00);
+            color: white;
+        }
+
+        .btn-clear {
+            background: linear-gradient(145deg, #f44336, #d32f2f);
+            color: white;
+        }
+
+        .btn-next {
+            background: linear-gradient(145deg, #2196F3, #1976D2);
+            color: white;
+        }
+
+        .btn:hover:not(:disabled) {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(-2px) scale(1.02);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .hint {
+            background: linear-gradient(145deg, rgba(3, 169, 244, 0.15), rgba(33, 150, 243, 0.15));
+            border: 2px solid #03a9f4;
+            border-radius: 20px;
+            padding: clamp(15px, 3vw, 20px);
+            margin: clamp(15px, 3vw, 20px) 0;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            animation: hintSlide 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(3, 169, 244, 0.1);
+            color: #1976d2;
+            line-height: 1.4;
+        }
+
+        @keyframes hintSlide {
+            from { 
+                opacity: 0; 
+                transform: translateX(-30px) scale(0.9); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0) scale(1); 
+            }
+        }
+
+        .message {
+            padding: clamp(15px, 3vw, 20px);
+            border-radius: 20px;
+            margin: clamp(15px, 4vw, 25px) 0;
+            font-size: clamp(1.1rem, 2.8vw, 1.3rem);
+            font-weight: bold;
+            animation: messageSlide 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            line-height: 1.4;
+        }
+
+        @keyframes messageSlide {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px) scale(0.95); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0) scale(1); 
+            }
+        }
+
+        .success {
+            background: linear-gradient(145deg, rgba(76, 175, 80, 0.2), rgba(139, 195, 74, 0.2));
+            border: 2px solid #4CAF50;
+            color: #2e7d32;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.15);
+        }
+
+        .error {
+            background: linear-gradient(145deg, rgba(244, 67, 54, 0.2), rgba(229, 57, 53, 0.2));
+            border: 2px solid #f44336;
+            color: #c62828;
+            box-shadow: 0 10px 30px rgba(244, 67, 54, 0.15);
+        }
+
+        .game-complete {
+            background: linear-gradient(145deg, rgba(3, 169, 244, 0.2), rgba(33, 150, 243, 0.2));
+            border: 2px solid #03a9f4;
+            color: #1976d2;
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            box-shadow: 0 15px 40px rgba(3, 169, 244, 0.2);
+        }
+
+        .shake {
+            animation: shake 0.6s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        /* Media Queries Mejoradas */
+
+        /* Pantallas pequeñas (teléfonos en vertical) */
+        @media (max-width: 480px) {
+            html {
+                padding: 5px;
+            }
+            
+            .game-container {
+                border-radius: 20px;
+                margin: 0;
+                width: calc(100% - 10px);
+            }
+            
+            .game-info {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .info-card {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .letters-container {
+                gap: 6px;
+                padding: 0 5px;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+                min-width: auto;
+                font-size: 1rem;
+            }
+            
+            .answer-container {
+                padding: 15px 10px;
+            }
+        }
+
+        /* Pantallas medianas (tabletas) */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .game-container {
+                margin: 5px;
+                width: calc(100% - 10px);
+            }
+            
+            .letters-container {
+                gap: 10px;
+            }
+            
+            .buttons-container {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .btn {
+                flex: 1;
+                min-width: 120px;
+                max-width: 150px;
+            }
+        }
+
+        /* Pantallas grandes (escritorio) */
+        @media (min-width: 1200px) {
+            .game-container {
+                max-width: 800px;
+            }
+            
+            .letter-tile {
+                width: 65px;
+                height: 65px;
+                font-size: 2rem;
+            }
+            
+            .answer-letter {
+                width: 55px;
+                height: 55px;
+                font-size: 1.8rem;
+            }
+        }
+
+        /* Orientación landscape en móviles */
+        @media (max-height: 500px) and (orientation: landscape) {
+            html {
+                align-items: flex-start;
+                padding: 10px 5px;
+            }
+            
+            .game-container {
+                padding: 15px;
+                margin: 0;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+                margin-bottom: 8px;
+            }
+            
+            .subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 15px;
+            }
+            
+            .letters-container,
+            .answer-container {
+                margin: 15px 0;
+                min-height: 50px;
+            }
+            
+            .letter-tile,
+            .answer-letter {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .buttons-container {
+                margin: 15px 0;
+                gap: 10px;
+            }
+            
+            .btn {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Accesibilidad mejorada */
+        @media (prefers-reduced-motion: reduce) {
+            .letter-tile,
+            .answer-letter,
+            .btn {
+                transition: none;
+            }
+            
+            .game-container {
+                animation: none;
+            }
+            
+            html::before {
+                animation: none;
+            }
+        }
+
+        /* Modo oscuro */
+        @media (prefers-color-scheme: dark) {
+            html {
+                background: linear-gradient(135deg, #1a1a1a 0%, #2c3e50 25%, #34495e 50%, #2c3e50 75%, #1a1a1a 100%);
+            }
+            
+            .game-container {
+                background: rgba(44, 62, 80, 0.95);
+                color: #ecf0f1;
+                border-color: rgba(52, 152, 219, 0.4);
+            }
+            
+            .subtitle {
+                color: #bdc3c7;
+            }
+        }
+
+        /* Touch targets mejorados */
+        @media (pointer: coarse) {
+            .letter-tile,
+            .answer-letter {
+                min-width: 44px;
+                min-height: 44px;
+            }
+            
+            .btn {
+                min-height: 44px;
+                touch-action: manipulation;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="game-container">
+        <h1>🚀 ESCRIBE LA CONSULTA</h1>
+        <p class="subtitle">Forma las palabras SQL seleccionando las letras</p>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+        
+        <div class="game-info">
+            <div class="info-card">🎯 Nivel: <span id="currentLevel">1</span>/5</div>
+            <div class="info-card">💡 Pistas: <span id="hintsLeft">2</span></div>
+        </div>
+        
+        <div class="letters-container" id="lettersContainer">
+            <!-- Las letras se generarán dinámicamente -->
+        </div>
+        
+        <div class="answer-container" id="answerContainer">
+            <div style="color: rgba(84,110,122,0.7); font-size: 1.1em;">Selecciona las letras para formar la palabra</div>
+        </div>
+        
+        <div class="buttons-container">
+            <button class="btn btn-primary" onclick="checkAnswer()" id="checkBtn">✓ Verificar</button>
+            <button class="btn btn-hint" onclick="showHint()" id="hintBtn">💡 Pista</button>
+            <button class="btn btn-clear" onclick="clearAnswer()">🧹 Borrar</button>
+            <button class="btn btn-next" onclick="nextLevel()" id="nextBtn" style="display: none;">➤ Siguiente</button>
+        </div>
+        
+        <div id="hintContainer"></div>
+        <div id="messageContainer"></div>
+    </div>
+
+    <script>
+        const gameData = [
+            {
+                word: "SELECT",
+                hints: [
+                    "🔍 Se usa para consultar y obtener datos de una base de datos",
+                    "📋 Es la primera palabra en la mayoría de consultas SQL para recuperar información"
+                ]
+            },
+            {
+                word: "INSERT",
+                hints: [
+                    "➕ Se utiliza para agregar nuevos registros a una tabla",
+                    "💾 Comando para introducir datos nuevos en la base de datos"
+                ]
+            },
+            {
+                word: "UPDATE",
+                hints: [
+                    "✏️ Se usa para modificar registros existentes en una tabla",
+                    "🔄 Permite cambiar valores específicos de datos ya almacenados"
+                ]
+            },
+            {
+                word: "DELETE",
+                hints: [
+                    "🗑️ Comando para eliminar registros específicos de una tabla",
+                    "❌ Se usa para borrar datos que ya no necesitas en la base de datos"
+                ]
+            },
+            {
+                word: "CREATE",
+                hints: [
+                    "🏗️ Se utiliza para crear nuevas tablas, bases de datos o estructuras",
+                    "✨ Comando fundamental para construir y definir esquemas en SQL"
+                ]
+            }
+        ];
+
+        let currentLevel = 0;
+        let hintsUsed = 0;
+        let gameCompleted = false;
+        let currentAnswer = [];
+        let availableLetters = [];
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function createLetterTiles() {
+            const word = gameData[currentLevel].word;
+            const letters = word.split('');
+            
+            // Agregar algunas letras extra para mayor dificultad
+            const extraLetters = ['A', 'B', 'F', 'G', 'H', 'J', 'K', 'M', 'N', 'O', 'P', 'Q', 'V', 'W', 'X', 'Y', 'Z'];
+            const randomExtras = extraLetters.sort(() => 0.5 - Math.random()).slice(0, 3);
+            
+            availableLetters = shuffleArray([...letters, ...randomExtras]);
+            
+            const container = document.getElementById('lettersContainer');
+            container.innerHTML = '';
+            
+            availableLetters.forEach((letter, index) => {
+                const tile = document.createElement('div');
+                tile.className = 'letter-tile';
+                tile.textContent = letter;
+                tile.dataset.index = index;
+                tile.dataset.letter = letter;
+                tile.onclick = () => selectLetter(index, letter, tile);
+                
+                // Mejorar accesibilidad
+                tile.setAttribute('role', 'button');
+                tile.setAttribute('tabindex', '0');
+                tile.setAttribute('aria-label', `Letra ${letter}`);
+                
+                // Soporte para teclado
+                tile.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        selectLetter(index, letter, tile);
+                    }
+                });
+                
+                container.appendChild(tile);
+            });
+        }
+
+        function selectLetter(index, letter, tileElement) {
+            if (tileElement.classList.contains('used')) return;
+            
+            currentAnswer.push({letter, index, element: tileElement});
+            tileElement.classList.add('used');
+            tileElement.setAttribute('aria-disabled', 'true');
+            
+            updateAnswerDisplay();
+        }
+
+        function updateAnswerDisplay() {
+            const container = document.getElementById('answerContainer');
+            
+            if (currentAnswer.length === 0) {
+                container.innerHTML = '<div style="color: rgba(84,110,122,0.7); font-size: 1.1em;">Selecciona las letras para formar la palabra</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            currentAnswer.forEach((item, index) => {
+                const letterDiv = document.createElement('div');
+                letterDiv.className = 'answer-letter';
+                letterDiv.textContent = item.letter;
+                letterDiv.onclick = () => removeLetter(index);
+                
+                // Mejorar accesibilidad
+                letterDiv.setAttribute('role', 'button');
+                letterDiv.setAttribute('tabindex', '0');
+                letterDiv.setAttribute('aria-label', `Remover letra ${item.letter}`);
+                
+                // Soporte para teclado
+                letterDiv.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        removeLetter(index);
+                    }
+                });
+                
+                container.appendChild(letterDiv);
+            });
+        }
+
+        function removeLetter(answerIndex) {
+            const removedItem = currentAnswer[answerIndex];
+            removedItem.element.classList.remove('used');
+            removedItem.element.setAttribute('aria-disabled', 'false');
+            currentAnswer.splice(answerIndex, 1);
+            updateAnswerDisplay();
+        }
+
+        function clearAnswer() {
+            currentAnswer.forEach(item => {
+                item.element.classList.remove('used');
+                item.element.setAttribute('aria-disabled', 'false');
+            });
+            currentAnswer = [];
+            updateAnswerDisplay();
+            
+            // Efecto visual de limpieza
+            const container = document.getElementById('answerContainer');
+            container.style.animation = 'none';
+            setTimeout(() => {
+                container.style.animation = '';
+            }, 10);
+        }
+
+        function checkAnswer() {
+            const userAnswer = currentAnswer.map(item => item.letter).join('');
+            const correctAnswer = gameData[currentLevel].word;
+            const messageContainer = document.getElementById('messageContainer');
+            
+            if (userAnswer === correctAnswer) {
+                messageContainer.innerHTML = '<div class="message success">🎉 ¡Excelente! Has formado la palabra correctamente.</div>';
+                document.getElementById('nextBtn').style.display = 'inline-block';
+                document.getElementById('hintBtn').disabled = true;
+                document.getElementById('checkBtn').disabled = true;
+                
+                // Efecto de éxito en las letras
+                document.querySelectorAll('.answer-letter').forEach((letter, index) => {
+                    setTimeout(() => {
+                        letter.style.transform = 'scale(1.2) rotate(360deg)';
+                        letter.style.background = 'linear-gradient(145deg, #4CAF50, #45a049)';
+                        letter.style.color = 'white';
+                    }, index * 100);
+                });
+                
+                if (currentLevel === gameData.length - 1) {
+                    setTimeout(() => {
+                        messageContainer.innerHTML = '<div class="message game-complete">🏆 ¡INCREÍBLE! Has dominado las consultas SQL básicas. ¡Eres un maestro de las bases de datos!</div>';
+                        document.getElementById('progressBar').style.width = '100%';
+                        gameCompleted = true;
+                    }, 2000);
+                }
+            } else {
+                messageContainer.innerHTML = '<div class="message error">❌ Palabra incorrecta. ¡Sigue intentando!</div>';
+                
+                // Efecto de error
+                const container = document.getElementById('answerContainer');
+                container.classList.add('shake');
+                setTimeout(() => {
+                    container.classList.remove('shake');
+                }, 600);
+            }
+        }
+
+        function showHint() {
+            if (hintsUsed < 2 && !gameCompleted) {
+                const hint = gameData[currentLevel].hints[hintsUsed];
+                const hintContainer = document.getElementById('hintContainer');
+                hintContainer.innerHTML += `<div class="hint">${hint}</div>`;
+                
+                hintsUsed++;
+                document.getElementById('hintsLeft').textContent = 2 - hintsUsed;
+                
+                if (hintsUsed >= 2) {
+                    document.getElementById('hintBtn').disabled = true;
+                }
+            }
+        }
+
+        function nextLevel() {
+            if (currentLevel < gameData.length - 1) {
+                currentLevel++;
+                hintsUsed = 0;
+                currentAnswer = [];
+                updateDisplay();
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById('currentLevel').textContent = currentLevel + 1;
+            document.getElementById('hintsLeft').textContent = 2 - hintsUsed;
+            
+            // Actualizar barra de progreso
+            const progress = (currentLevel / gameData.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            // Limpiar contenido
+            document.getElementById('hintContainer').innerHTML = '';
+            document.getElementById('messageContainer').innerHTML = '';
+            
+            // Resetear botones
+            document.getElementById('hintBtn').disabled = false;
+            document.getElementById('checkBtn').disabled = false;
+            document.getElementById('nextBtn').style.display = 'none';
+            
+            // Crear nuevas letras
+            createLetterTiles();
+            updateAnswerDisplay();
+        }
+
+        // Inicializar el juego
+        updateDisplay();
+
+        // Atajos de teclado mejorados
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !document.getElementById('checkBtn').disabled) {
+                checkAnswer();
+            } else if (e.key === 'Escape') {
+                clearAnswer();
+            } else if (e.key === 'h' || e.key === 'H') {
+                if (!document.getElementById('hintBtn').disabled) {
+                    showHint();
+                }
+            }
+        });
+
+        // Prevenir zoom en doble tap en iOS
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+
+        // Mejorar performance en dispositivos móviles
+        if ('ontouchstart' in window) {
+            document.body.style.cursor = 'default';
+        }
+
+        // Ajustar altura del viewport en móviles
+        function setVH() {
+            let vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }
+
+        setVH();
+        window.addEventListener('resize', setVH);
+        window.addEventListener('orientationchange', setVH);
+    </script>
+</body>
+</html>
