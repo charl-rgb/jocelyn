@@ -1,0 +1,1024 @@
+<!doctype html>
+<html class="no-js" lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>SQL Master - Aprende y Juega con Bases de Datos</title>
+    <meta name="description" content="Plataforma interactiva para aprender SQL a través de juegos y ejercicios prácticos">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" type="image/png" sizes="40x40" href="img\logo sql master-fotor-.png">
+    <link rel="apple-touch-icon" href="img\logo sql master-fotor-.png">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,300i,400,500,600,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        :root {
+            --navy: #2F4155;
+            --teal: #567C8D;
+            --sky-blue: #C8D9E6;
+            --beige: #F5EFEB;
+            --white: #FFFFFF;
+            --dark-teal: #386A70;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--beige);
+            color: var(--navy);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: var(--white);
+            box-shadow: 0 2px 15px rgba(47, 65, 85, 0.1);
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            box-shadow: 0 4px 12px rgba(47, 65, 85, 0.15);
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-brand span {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link {
+            color: var(--navy);
+            font-weight: 500;
+            margin: 0 12px;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--teal);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--teal);
+        }
+
+        .btn-primary {
+            background-color: var(--teal);
+            border-color: var(--teal);
+            color: white;
+            font-weight: 500;
+            padding: 10px 25px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(86, 124, 141, 0.2);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--navy);
+            border-color: var(--navy);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(47, 65, 85, 0.3);
+        }
+
+        /* Estilos del juego */
+        .game-container {
+            max-width: 1200px;
+            margin: 80px auto 40px;
+            padding: 20px;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(47, 65, 85, 0.1);
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, var(--teal), var(--dark-teal));
+            border-radius: 15px;
+            color: var(--white);
+        }
+
+        .game-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .game-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+
+        .instruction-card {
+            background: var(--sky-blue);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--teal);
+        }
+
+        .instruction-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--navy);
+            margin: 0;
+        }
+
+        .game-area {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .pieces-container {
+            background: var(--beige);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px dashed var(--teal);
+            min-height: 100px;
+        }
+
+        .pieces-title {
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .pieces-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .sql-piece {
+            background: var(--white);
+            border: 2px solid var(--teal);
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            color: var(--navy);
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(86, 124, 141, 0.2);
+        }
+
+        .sql-piece:hover {
+            background: var(--teal);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(86, 124, 141, 0.3);
+        }
+
+        .sql-piece.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .query-builder {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid var(--navy);
+            min-height: 120px;
+        }
+
+        .query-title {
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .query-display {
+            background: var(--beige);
+            padding: 15px;
+            border-radius: 10px;
+            min-height: 60px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            color: var(--navy);
+            border: 2px dashed var(--sky-blue);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .query-display.drag-over {
+            border-color: var(--teal);
+            background: rgba(86, 124, 141, 0.1);
+        }
+
+        .query-piece {
+            background: var(--teal);
+            color: var(--white);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .query-piece:hover {
+            background: var(--navy);
+            transform: translateY(-1px);
+        }
+
+        .query-piece .remove-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 10px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .query-piece:hover .remove-btn {
+            display: block;
+        }
+
+        .game-controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .btn-game {
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn-verify {
+            background: var(--teal);
+            color: var(--white);
+        }
+
+        .btn-verify:hover {
+            background: var(--dark-teal);
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .btn-reset:hover {
+            background: #1a2832;
+            transform: translateY(-2px);
+        }
+
+        .btn-new {
+            background: var(--sky-blue);
+            color: var(--navy);
+        }
+
+        .btn-new:hover {
+            background: #a8c5d6;
+            transform: translateY(-2px);
+        }
+
+        .result-message {
+            text-align: center;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .result-success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .result-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .score-display {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--sky-blue);
+            border-radius: 10px;
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .game-container {
+                margin: 30px 10px 20px;
+                padding: 12px;
+                max-width: calc(100vw - 20px);
+            }
+
+            .game-header {
+                padding: 18px;
+                margin-bottom: 25px;
+            }
+
+            .game-title {
+                font-size: 1.8rem;
+            }
+
+            .game-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .instruction-card {
+                padding: 12px;
+                margin-bottom: 20px;
+            }
+
+            .instruction-text {
+                font-size: 0.95rem;
+            }
+
+            .pieces-container,
+            .query-builder {
+                padding: 12px;
+            }
+
+            .sql-piece {
+                padding: 5px 10px;
+                font-size: 0.85rem;
+                margin: 2px;
+            }
+
+            .query-display {
+                padding: 10px;
+                font-size: 0.9rem;
+                min-height: 45px;
+            }
+
+            .query-piece {
+                padding: 3px 6px;
+                font-size: 0.8rem;
+            }
+
+            .btn-game {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+
+            .game-controls {
+                gap: 8px;
+                margin-top: 25px;
+            }
+
+            .score-display {
+                padding: 10px;
+                margin-bottom: 15px;
+            }
+
+            .game-area {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-container {
+                margin: 20px 5px 15px;
+                padding: 8px;
+            }
+
+            .game-header {
+                padding: 15px;
+            }
+
+            .game-title {
+                font-size: 1.6rem;
+            }
+
+            .game-subtitle {
+                font-size: 0.9rem;
+            }
+
+            .pieces-grid {
+                gap: 6px;
+            }
+
+            .sql-piece {
+                padding: 4px 8px;
+                font-size: 0.8rem;
+            }
+
+            .query-display {
+                font-size: 0.85rem;
+                gap: 4px;
+                padding: 8px;
+            }
+
+            .btn-game {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            .pieces-container,
+            .query-builder {
+                padding: 10px;
+            }
+
+            .instruction-card {
+                padding: 10px;
+            }
+
+            .instruction-text {
+                font-size: 0.9rem;
+            }
+        }
+
+        footer {
+            background-color: var(--navy);
+            color: var(--white);
+            padding: 80px 0 30px;
+            clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
+            margin-top: 50px;
+        }
+
+        .footer-title {
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--sky-blue);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--white);
+            padding-left: 5px;
+        }
+
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 18px;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--teal);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            footer {
+                clip-path: none;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+                <img src="img\logo sql master-fotor-.png" alt="SQL Master Logo" style="width: 40px; height: 40px;">
+                <span style="font-weight: 700; font-size: 1.5rem;">
+                    SQL Master
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#juegos">Juegos SQL</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#footer">Contacto</a>
+                    </li>
+                </ul>
+                
+            </div>
+        </div>
+    </nav>
+
+<!-- juego-->
+<div class="container-fluid">
+    <div class="game-container">
+        <!-- Header del juego -->
+        <div class="game-header">
+            <h1 class="game-title">
+                <i class="fas fa-code"></i> Escribe la Consulta
+            </h1>
+            <p class="game-subtitle">
+                Arrastra las piezas para formar la consulta SQL correcta
+            </p>
+        </div>
+
+        <!-- Puntuación -->
+        <div class="score-display">
+            <div class="row text-center">
+                <div class="col-md-4">
+                    <i class="fas fa-star"></i> Puntos: <span id="score">0</span>
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-check-circle"></i> Correctas: <span id="correct">0</span>
+                </div>
+                <div class="col-md-4">
+                    <i class="fas fa-trophy"></i> Nivel: <span id="level">1</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Instrucción del ejercicio -->
+        <div class="instruction-card">
+            <p class="instruction-text" id="instruction">
+                <i class="fas fa-lightbulb"></i> 
+                <span id="instructionText">Cargando ejercicio...</span>
+            </p>
+        </div>
+
+        <div class="game-area">
+            <!-- Contenedor de piezas disponibles -->
+            <div class="pieces-container">
+                <h4 class="pieces-title">
+                    <i class="fas fa-puzzle-piece"></i> Piezas Disponibles
+                </h4>
+                <div class="pieces-grid" id="piecesContainer">
+                    <!-- Las piezas se generarán dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Constructor de consulta -->
+            <div class="query-builder">
+                <h4 class="query-title">
+                    <i class="fas fa-database"></i> Tu Consulta SQL
+                </h4>
+                <div class="query-display" id="queryDisplay">
+                    <span style="color: #999; font-style: italic;">Arrastra las piezas aquí o haz clic en ellas...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controles del juego -->
+        <div class="game-controls">
+            <button class="btn-game btn-verify" id="verifyBtn">
+                <i class="fas fa-check"></i> Verificar
+            </button>
+            <button class="btn-game btn-reset" id="resetBtn">
+                <i class="fas fa-undo"></i> Reiniciar
+            </button>
+            <button class="btn-game btn-new" id="newExerciseBtn">
+                <i class="fas fa-refresh"></i> Nuevo Ejercicio
+            </button>
+        </div>
+
+        <!-- Mensaje de resultado -->
+        <div id="resultMessage" style="display: none;"></div>
+    </div>
+</div>
+    
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h5 class="footer-title">SQL Master</h5>
+                    <p class="mb-4">Plataforma interactiva para aprender bases de datos y SQL a través de juegos y desafíos.</p>
+                    <div class="mt-4">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <h5 class="footer-title">Juegos</h5>
+                    <ul class="footer-links">
+                        <li><a href="index.html#juegos">SQL Constructor</a></li>
+                        <li><a href="index.html#juegos">Escribe la consulta</a></li>
+                        <li><a href="index.html#juegos">SQL Quest</a></li>
+                        <li><a href="index.html#juegos">Todos los juegos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+                    <h5 class="footer-title">Recursos</h5>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Tutoriales</a></li>
+                        <li><a href="#">Documentación</a></li>
+                        <li><a href="#">Comunidad</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="footer-title">Contacto</h5>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope me-2"></i> info@sqlmaster.com</li>
+                        <li><i class="fas fa-phone me-2"></i> +503 12345678</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Calle SQL, San Salvador</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="row copyright">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <p class="mb-0">© 2025 SQL Master. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white me-3">Términos de servicio</a>
+                    <a href="#" class="text-white me-3">Política de privacidad</a>
+                
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Lógica del juego SQL
+        class SQLGame {
+            constructor() {
+                this.score = 0;
+                this.correct = 0;
+                this.level = 1;
+                this.currentExercise = null;
+                this.userQuery = [];
+                this.exercises = [
+                    // Nivel 1 - Consultas básicas SELECT
+                    {
+                        instruction: "Selecciona todos los campos de la tabla usuarios",
+                        pieces: ["SELECT", "*", "FROM", "usuarios", ";"],
+                        solution: ["SELECT", "*", "FROM", "usuarios", ";"],
+                        difficulty: 1
+                    },
+                   
+                    
+                    // Nivel 2 - Consultas con condiciones y ordenamiento
+                    {
+                        instruction: "Selecciona usuarios donde la edad sea mayor a 18",
+                        pieces: ["SELECT", "*", "FROM", "usuarios", "WHERE", "edad", ">", "18", ";"],
+                        solution: ["SELECT", "*", "FROM", "usuarios", "WHERE", "edad", ">", "18", ";"],
+                        difficulty: 2
+                    },
+                    
+                    
+                    // Nivel 3 - Funciones agregadas y agrupamiento
+                    {
+                        instruction: "Cuenta el número total de registros en la tabla ventas",
+                        pieces: ["SELECT", "COUNT", "(", "*", ")", "FROM", "ventas", ";"],
+                        solution: ["SELECT", "COUNT", "(", "*", ")", "FROM", "ventas", ";"],
+                        difficulty: 3
+                    },
+                    
+                    
+                    // Nivel 4 - Consultas con múltiples condiciones
+                    {
+                        instruction: "Selecciona clientes de Madrid con edad entre 25 y 40 años",
+                        pieces: ["SELECT", "*", "FROM", "clientes", "WHERE", "ciudad", "=", "'Madrid'", "AND", "edad", "BETWEEN", "25", "AND", "40", ";"],
+                        solution: ["SELECT", "*", "FROM", "clientes", "WHERE", "ciudad", "=", "'Madrid'", "AND", "edad", "BETWEEN", "25", "AND", "40", ";"],
+                        difficulty: 4
+                    },
+                   
+                    
+                    // Nivel 5 - Consultas con JOIN básico
+                    {
+                        instruction: "Selecciona pedidos con información del cliente",
+                        pieces: ["SELECT", "pedidos.*", ",", "clientes.nombre", "FROM", "pedidos", "JOIN", "clientes", "ON", "pedidos.cliente_id", "=", "clientes.id", ";"],
+                        solution: ["SELECT", "pedidos.*", ",", "clientes.nombre", "FROM", "pedidos", "JOIN", "clientes", "ON", "pedidos.cliente_id", "=", "clientes.id", ";"],
+                        difficulty: 5
+                    },
+                  
+                    
+                    // Nivel 6 - Consultas con subconsultas
+                    {
+                        instruction: "Selecciona clientes que han realizado más de 5 pedidos",
+                        pieces: ["SELECT", "*", "FROM", "clientes", "WHERE", "id", "IN", "(", "SELECT", "cliente_id", "FROM", "pedidos", "GROUP", "BY", "cliente_id", "HAVING", "COUNT", "(", "*", ")", ">", "5", ")", ";"],
+                        solution: ["SELECT", "*", "FROM", "clientes", "WHERE", "id", "IN", "(", "SELECT", "cliente_id", "FROM", "pedidos", "GROUP", "BY", "cliente_id", "HAVING", "COUNT", "(", "*", ")", ">", "5", ")", ";"],
+                        difficulty: 6
+                    },
+                    
+                    
+                    // Nivel 7 - Consultas avanzadas con JOIN
+                    {
+                        instruction: "Muestra pedidos con detalles de productos y cliente",
+                        pieces: ["SELECT", "p.id", ",", "c.nombre", "AS", "cliente", ",", "pr.nombre", "AS", "producto", ",", "pd.cantidad", "FROM", "pedidos", "AS", "p", "JOIN", "clientes", "AS", "c", "ON", "p.cliente_id", "=", "c.id", "JOIN", "pedido_detalles", "AS", "pd", "ON", "p.id", "=", "pd.pedido_id", "JOIN", "productos", "AS", "pr", "ON", "pd.producto_id", "=", "pr.id", ";"],
+                        solution: ["SELECT", "p.id", ",", "c.nombre", "AS", "cliente", ",", "pr.nombre", "AS", "producto", ",", "pd.cantidad", "FROM", "pedidos", "AS", "p", "JOIN", "clientes", "AS", "c", "ON", "p.cliente_id", "=", "c.id", "JOIN", "pedido_detalles", "AS", "pd", "ON", "p.id", "=", "pd.pedido_id", "JOIN", "productos", "AS", "pr", "ON", "pd.producto_id", "=", "pr.id", ";"],
+                        difficulty: 7
+                    },
+                    
+                    
+                    // Nivel 8 - Consultas con funciones de fecha
+                    {
+                        instruction: "Selecciona pedidos realizados en el último mes",
+                        pieces: ["SELECT", "*", "FROM", "pedidos", "WHERE", "fecha", ">=", "DATE_SUB", "(", "CURDATE", "(", ")", ",", "INTERVAL", "1", "MONTH", ")", ";"],
+                        solution: ["SELECT", "*", "FROM", "pedidos", "WHERE", "fecha", ">=", "DATE_SUB", "(", "CURDATE", "(", ")", ",", "INTERVAL", "1", "MONTH", ")", ";"],
+                        difficulty: 8
+                    },
+                    
+                    
+                    // Nivel 9 - Consultas con CASE y funciones avanzadas
+                    {
+                        instruction: "Clasifica productos por rango de precio",
+                        pieces: ["SELECT", "nombre", ",", "precio", ",", "CASE", "WHEN", "precio", "<", "100", "THEN", "'Económico'", "WHEN", "precio", "BETWEEN", "100", "AND", "500", "THEN", "'Intermedio'", "ELSE", "'Premium'", "END", "AS", "categoria_precio", "FROM", "productos", ";"],
+                        solution: ["SELECT", "nombre", ",", "precio", ",", "CASE", "WHEN", "precio", "<", "100", "THEN", "'Económico'", "WHEN", "precio", "BETWEEN", "100", "AND", "500", "THEN", "'Intermedio'", "ELSE", "'Premium'", "END", "AS", "categoria_precio", "FROM", "productos", ";"],
+                        difficulty: 9
+                    },
+
+                    
+                    // Nivel 10 - Consultas complejas con múltiples JOIN y subconsultas
+                    {
+                        instruction: "Muestra el producto más vendido por categoría",
+                        pieces: ["SELECT", "c.nombre", "AS", "categoria", ",", "p.nombre", "AS", "producto_mas_vendido", ",", "MAX", "(", "ventas.total", ")", "AS", "cantidad_vendida", "FROM", "categorias", "AS", "c", "JOIN", "productos", "AS", "p", "ON", "c.id", "=", "p.categoria_id", "JOIN", "(", "SELECT", "producto_id", ",", "SUM", "(", "cantidad", ")", "AS", "total", "FROM", "pedido_detalles", "GROUP", "BY", "producto_id", ")", "AS", "ventas", "ON", "p.id", "=", "ventas.producto_id", "GROUP", "BY", "c.nombre", ",", "p.nombre", ";"],
+                        solution: ["SELECT", "c.nombre", "AS", "categoria", ",", "p.nombre", "AS", "producto_mas_vendido", ",", "MAX", "(", "ventas.total", ")", "AS", "cantidad_vendida", "FROM", "categorias", "AS", "c", "JOIN", "productos", "AS", "p", "ON", "c.id", "=", "p.categoria_id", "JOIN", "(", "SELECT", "producto_id", ",", "SUM", "(", "cantidad", ")", "AS", "total", "FROM", "pedido_detalles", "GROUP", "BY", "producto_id", ")", "AS", "ventas", "ON", "p.id", "=", "ventas.producto_id", "GROUP", "BY", "c.nombre", ",", "p.nombre", ";"],
+                        difficulty: 10
+                    },
+                ];
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.loadNewExercise();
+                this.updateScoreDisplay();
+            }
+
+            setupEventListeners() {
+                document.getElementById('verifyBtn').addEventListener('click', () => this.verifyQuery());
+                document.getElementById('resetBtn').addEventListener('click', () => this.resetQuery());
+                document.getElementById('newExerciseBtn').addEventListener('click', () => this.loadNewExercise());
+
+                // Drag and drop para el query display
+                const queryDisplay = document.getElementById('queryDisplay');
+                queryDisplay.addEventListener('dragover', this.handleDragOver);
+                queryDisplay.addEventListener('drop', (e) => this.handleDrop(e));
+            }
+
+            loadNewExercise() {
+                const availableExercises = this.exercises.filter(ex => ex.difficulty <= this.level);
+                this.currentExercise = availableExercises[Math.floor(Math.random() * availableExercises.length)];
+                
+                document.getElementById('instructionText').textContent = this.currentExercise.instruction;
+                this.resetQuery();
+                this.renderPieces();
+                this.hideResult();
+            }
+
+            renderPieces() {
+                const container = document.getElementById('piecesContainer');
+                container.innerHTML = '';
+                
+                // Mezclar las piezas
+                const shuffledPieces = [...this.currentExercise.pieces].sort(() => Math.random() - 0.5);
+                
+                shuffledPieces.forEach((piece, index) => {
+                    const pieceElement = document.createElement('div');
+                    pieceElement.className = 'sql-piece';
+                    pieceElement.textContent = piece;
+                    pieceElement.draggable = true;
+                    pieceElement.dataset.piece = piece;
+                    pieceElement.dataset.index = index;
+                    
+                    // Event listeners para drag and drop
+                    pieceElement.addEventListener('dragstart', this.handleDragStart);
+                    pieceElement.addEventListener('dragend', this.handleDragEnd);
+                    
+                    // Event listener para click (especialmente móvil)
+                    pieceElement.addEventListener('click', () => this.addPieceToQuery(piece));
+                    
+                    container.appendChild(pieceElement);
+                });
+            }
+
+            addPieceToQuery(piece) {
+                this.userQuery.push(piece);
+                this.updateQueryDisplay();
+            }
+
+            removePieceFromQuery(index) {
+                this.userQuery.splice(index, 1);
+                this.updateQueryDisplay();
+            }
+
+            updateQueryDisplay() {
+                const display = document.getElementById('queryDisplay');
+                display.innerHTML = '';
+                
+                if (this.userQuery.length === 0) {
+                    display.innerHTML = '<span style="color: #999; font-style: italic;">Arrastra las piezas aquí o haz clic en ellas...</span>';
+                    return;
+                }
+                
+                this.userQuery.forEach((piece, index) => {
+                    const pieceElement = document.createElement('span');
+                    pieceElement.className = 'query-piece';
+                    pieceElement.textContent = piece;
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'remove-btn';
+                    removeBtn.innerHTML = '×';
+                    removeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.removePieceFromQuery(index);
+                    });
+                    
+                    pieceElement.appendChild(removeBtn);
+                    pieceElement.addEventListener('click', () => this.removePieceFromQuery(index));
+                    
+                    display.appendChild(pieceElement);
+                });
+            }
+
+            handleDragStart(e) {
+                e.dataTransfer.setData('text/plain', e.target.dataset.piece);
+                e.target.classList.add('dragging');
+            }
+
+            handleDragEnd(e) {
+                e.target.classList.remove('dragging');
+            }
+
+            handleDragOver(e) {
+                e.preventDefault();
+                e.currentTarget.classList.add('drag-over');
+            }
+
+            handleDrop(e) {
+                e.preventDefault();
+                e.currentTarget.classList.remove('drag-over');
+                const piece = e.dataTransfer.getData('text/plain');
+                if (piece) {
+                    this.addPieceToQuery(piece);
+                }
+            }
+
+            verifyQuery() {
+                if (this.userQuery.length === 0) {
+                    this.showResult(false, "¡Debes construir una consulta primero!");
+                    return;
+                }
+
+                const userQueryStr = this.userQuery.join(' ').trim();
+                const solutionStr = this.currentExercise.solution.join(' ').trim();
+                
+                if (userQueryStr === solutionStr) {
+                    const points = this.currentExercise.difficulty * 10;
+                    this.score += points;
+                    this.correct++;
+                    
+                    // Subir de nivel cada 3 respuestas correctas (hasta nivel 10)
+                    if (this.correct % 1 === 0 && this.level < 10) {
+                        this.level++;
+                        this.showResult(true, `¡Correcto! +${points} puntos. ¡Has subido al nivel ${this.level}!`);
+                    } else {
+                        this.showResult(true, `¡Excelente! +${points} puntos. ¡Consulta SQL perfecta!`);
+                    }
+                    
+                    this.updateScoreDisplay();
+                    
+                    // Auto-cargar nuevo ejercicio después de 3 segundos
+                    setTimeout(() => this.loadNewExercise(), 3000);
+                } else {
+                    this.showResult(false, `Incorrecto. La consulta correcta es: ${solutionStr}`);
+                }
+            }
+
+            resetQuery() {
+                this.userQuery = [];
+                this.updateQueryDisplay();
+                this.hideResult();
+            }
+
+            showResult(success, message) {
+                const resultDiv = document.getElementById('resultMessage');
+                resultDiv.className = `result-message ${success ? 'result-success' : 'result-error'}`;
+                resultDiv.innerHTML = `<i class="fas fa-${success ? 'check-circle' : 'times-circle'}"></i> ${message}`;
+                resultDiv.style.display = 'block';
+                
+                // Scroll suave hacia el resultado
+                resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            hideResult() {
+                document.getElementById('resultMessage').style.display = 'none';
+            }
+
+            updateScoreDisplay() {
+                document.getElementById('score').textContent = this.score;
+                document.getElementById('correct').textContent = this.correct;
+                document.getElementById('level').textContent = this.level;
+            }
+        }
+
+        // Inicializar el juego cuando se carga la página
+        document.addEventListener('DOMContentLoaded', () => {
+            new SQLGame();
+        });
+    </script>
+</body>
+
+</html>
